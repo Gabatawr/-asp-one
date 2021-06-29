@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>My layout</title>
+</head>
+<body>
+    <header>
+        <h1>First asp.net app!</h1>
+        <nav>
+            <ul>
+                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                <li>@Html.ActionLink("Hello", "Hello", "Home")</li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer>
+        <p>&copy; by Gabatawr 2021</p>
+        @RenderSection("FooterSection")
+    </footer>
+</body>
+</html>
