@@ -7,6 +7,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wa-1", "wa-1\wa-1.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hw-1", "hw-1\hw-1.csproj", "{0F8DEDD8-E0DF-4D39-861A-237238573305}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "json", "json", "{69827CDB-6D25-4589-97B0-EFBA1181E57E}"
+	ProjectSection(SolutionItems) = preProject
+		people.json = people.json
+		schema.json = schema.json
+	EndProjectSection
+	ProjectSection(FolderGlobals) = preProject
+		E_5_4Code_4-asp-one_4-asp-one_4people_1json__JsonSchema = schema.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

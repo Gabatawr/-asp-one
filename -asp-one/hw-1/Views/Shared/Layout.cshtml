@@ -1,0 +1,108 @@
+﻿@{
+    string curPageClass = "current-menu-item";
+
+    ViewBag.HomeCurrentPage = ViewBag.Title == "Home" ? curPageClass : string.Empty;
+    ViewBag.AboutCurrentPage = ViewBag.Title == "About" ? curPageClass : string.Empty;
+    ViewBag.WorkCurrentPage = ViewBag.Title == "Work" ? curPageClass : string.Empty;
+    ViewBag.BlogCurrentPage = ViewBag.Title == "Blog" ? curPageClass : string.Empty;
+    ViewBag.ContactCurrentPage = ViewBag.Title == "Contact" ? curPageClass : string.Empty;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700|Open+Sans:400,700">
+    @Styles.Render("~/Content/css")
+</head>
+
+<body>
+    <div class="page-wrap" id="root">
+
+        <!-- header -->
+        <header class="header header--fixed">
+            <div class="header__inner">
+                <div class="header__logo">
+                    <a href='@Url.Action("Index", "Main")'>
+                        <img src='@Url.Content("~/Images/logo.png")' />
+                    </a>
+                </div>
+                <div class="navbar-toggle" id="fs-button">
+                    <div class="navbar-icon"><span></span></div>
+                </div>
+            </div>
+
+            <!-- fullscreenmenu__module -->
+            <div class="fullscreenmenu__module" trigger="#fs-button">
+
+                <!-- overlay-menu -->
+                <nav class="overlay-menu">
+
+                    <!--  -->
+                    <ul class="wil-menu-list">
+                        <li class="@ViewBag.HomeCurrentPage">
+                            @Html.ActionLink("Home", "Index", "Main")
+                        </li>
+                        <li  class="@ViewBag.AboutCurrentPage">
+                            @Html.ActionLink("About", "About", "Main")
+                        </li>
+                        <li  class="@ViewBag.WorkCurrentPage">
+                            @Html.ActionLink("Work", "Work", "Main")
+                        </li>
+                        <li  class="@ViewBag.BlogCurrentPage">
+                            @Html.ActionLink("Blog", "Blog", "Main")
+                        </li>
+                        <li  class="@ViewBag.ContactCurrentPage">
+                            @Html.ActionLink("Contact", "Contact", "Main")
+                        </li>
+                    </ul><!--  -->
+
+                </nav><!-- End / overlay-menu -->
+            </div><!-- End / fullscreenmenu__module -->
+        </header><!-- End / header -->
+        @RenderBody()
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-lg-6 ">
+                        <p class="footer__coppy">2018 &copy; Copyright <a href="http://awe7.com/">Awe7</a>. All rights Reserved.</p>
+                    </div>
+                    <div class="col-md-6 col-lg-6 ">
+                        <div class="footer__social">
+
+                            <!-- social-icon -->
+                            <a class="social-icon" href="#">
+                                <i class="social-icon__icon fa fa-facebook"></i>
+                            </a><!-- End / social-icon -->
+                            <!-- social-icon -->
+                            <a class="social-icon" href="#">
+                                <i class="social-icon__icon fa fa-twitter"></i>
+                            </a><!-- End / social-icon -->
+                            <!-- social-icon -->
+                            <a class="social-icon" href="#">
+                                <i class="social-icon__icon fa fa-linkedin"></i>
+                            </a><!-- End / social-icon -->
+                            <!-- social-icon -->
+                            <a class="social-icon" href="#">
+                                <i class="social-icon__icon fa fa-behance"></i>
+                            </a><!-- End / social-icon -->
+                            <!-- social-icon -->
+                            <a class="social-icon" href="#">
+                                <i class="social-icon__icon fa fa-vimeo"></i>
+                            </a><!-- End / social-icon -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End / footer -->
+
+    </div>
+    @Scripts.Render("~/bundles/vendors")
+    @Scripts.Render("~/bundles/app")
+</body>
+</html>

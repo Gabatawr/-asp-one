@@ -1,0 +1,46 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "firstName": {
+                "type": "string",
+                "minLength": 3,
+                "description": "first name of a person"
+            },
+            "lastName": {
+                "type": "string",
+                "minLength": 3,
+                "description": "last name of a person"
+            },
+            "isAlive": {
+                "type": "boolean",
+                "default": true
+            },
+            "phoneNumbers": {
+                "type": "number",
+                "items": {
+                    "$ref": "#/definitions/phoneNumber"
+                }
+            }
+        }
+    },
+    "definitions": {
+        "phoneNumber": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [ "home", "office", "mobile" ]
+                },
+                "number": {
+                    "type": "string",
+                    "pattern": "^(\\([0-9]{3}\\))?[0-9]{3}-[0-9]{4}$"
+                }
+
+            }
+        }
+    }
+
+}

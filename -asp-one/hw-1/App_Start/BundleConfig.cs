@@ -27,8 +27,7 @@ namespace hw_1
                         "~/Scripts/jquery.waypoints.min.js",
                         "~/Scripts/swiper.jquery.js",
                         "~/Scripts/menu.js",
-                        "~/Scripts/typed.min.js",
-                        "~/Scripts/main.js"));
+                        "~/Scripts/typed.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/app").Include(
                         "~/Scripts/main.js"));
