@@ -1,0 +1,23 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <form method="post">
+        <input type="submit" value="on" asp-page-handler="" />
+        <input type="checkbox" checked="@Model.isPosted" onclick="return false;" />
+        <input type="submit" value="off" asp-page-handler="Custom" />
+        <div></div>
+        <input type="submit" value="redirect" asp-page-handler="Redirect" />
+    </form>
+
+    <a href="~/?handler=Favicon">
+        <input type="button" value="favicon"/>
+    </a>
+
+</div>
