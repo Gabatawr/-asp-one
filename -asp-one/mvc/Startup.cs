@@ -62,8 +62,17 @@ namespace mvc
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "privacyInt",
+                    pattern: "{controller=Home}/Privacy/{id:int}",
+                    defaults: new { action = "PrivacyByInt" });
+
+                endpoints.MapControllerRoute(
+                    name: "privacyString",
+                    pattern: "{controller=Home}/{action=Privacy}/{id:guid?}");
+
+                endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}");
                 endpoints.MapRazorPages();
             });
         }

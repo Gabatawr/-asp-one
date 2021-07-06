@@ -22,12 +22,15 @@ namespace mvc.Controllers
         {
             return View();
         }
-
-        public IActionResult Privacy()
+        public IActionResult Privacy(Guid? id)
         {
-            return View();
+            return View(id);
         }
-
+        [ActionName("PrivacyByInt")]
+        public IActionResult Privacy(int id)
+        {
+            return View("Privacy", id);
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
