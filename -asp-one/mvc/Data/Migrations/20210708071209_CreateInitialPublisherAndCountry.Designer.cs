@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using mvc.Data;
 
 namespace mvc.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210708071209_CreateInitialPublisherAndCountry")]
+    partial class CreateInitialPublisherAndCountry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,7 +274,7 @@ namespace mvc.Data.Migrations
                     b.Property<DateTime>("Published")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("PublisherId")
+                    b.Property<Guid?>("PublishersId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
@@ -280,7 +282,7 @@ namespace mvc.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PublisherId");
+                    b.HasIndex("PublishersId");
 
                     b.ToTable("Books");
                 });
@@ -386,11 +388,11 @@ namespace mvc.Data.Migrations
 
             modelBuilder.Entity("mvc.Data.Book", b =>
                 {
-                    b.HasOne("mvc.Data.Publisher", "Publisher")
+                    b.HasOne("mvc.Data.Publisher", "Publishers")
                         .WithMany("Books")
-                        .HasForeignKey("PublisherId");
+                        .HasForeignKey("PublishersId");
 
-                    b.Navigation("Publisher");
+                    b.Navigation("Publishers");
                 });
 
             modelBuilder.Entity("mvc.Data.Publisher", b =>

@@ -15,8 +15,10 @@ namespace mvc.Data
 
         }
 
-        public DbSet<Author> Author { get; set; }
         public DbSet<Book> Books { get; set; }
+        public DbSet<Author> Author { get; set; }
+        public DbSet<Publisher> Publisher { get; set; }
+        public DbSet<Country> Country { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
