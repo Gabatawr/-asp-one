@@ -21,9 +21,9 @@ namespace mvc.Controllers
         }
 
         // GET: Authors
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Author.ToListAsync());
+            return View(_context.Author.AsAsyncEnumerable());
         }
 
         // GET: Authors/Details/5

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<mvc.Data.Author>
+﻿@model IAsyncEnumerable<mvc.Data.Author>
 
 <!DOCTYPE html>
 
@@ -15,19 +15,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Html.DisplayName(nameof(mvc.Data.Author.FirstName))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Html.DisplayName(nameof(mvc.Data.Author.LastName))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Birthday)
+                @Html.DisplayName(nameof(mvc.Data.Author.Birthday))
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@await foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)

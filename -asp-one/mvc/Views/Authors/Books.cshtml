@@ -36,27 +36,33 @@
         <tbody>
             @for (int i = 0; i < Model.Count(); i++)
             {
-                <tr>
-                    <td>
-                        @Html.HiddenFor(modelItem => Model[i].Book.Id)
-                        @Html.EditorFor(modelItem => Model[i].IsSelected)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model[i].Book.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model[i].Book.Decription)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model[i].Book.Pages)
-                    </td>
-                    <td>
-                        @Html.Raw(string.Join("<br/>", Model[i].Book.Codes.Select(Html.Encode)))
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => Model[i].Book.Published)
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @Html.HiddenFor(modelItem => Model[i].Book.Id)
+                    @Html.EditorFor(modelItem => Model[i].IsSelected)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].Book.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].Book.Decription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].Book.Pages)
+                </td>
+                <td>
+                    @Html.Raw(string.Join("<br/>", Model[i].Book.Codes.Select(Html.Encode)))
+                </td>
+                @*<td>
+                    @Html.ListBoxFor(
+                        modelItem => modelItem[i].Book.Codes,
+                        Model[i].Book.Codes.Select(c => new SelectListItem(c, c))
+                    )
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].Book.Published)
+                </td>
+            </tr>
             }
         </tbody>
     </table>
