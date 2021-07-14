@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -161,13 +162,14 @@ namespace mvc.Controllers
                 new SelectedBook
                 {
                     Book = b,
+                    BookCodes = JsonSerializer.Serialize(b.Codes, null),
                     IsSelected = b.Authors.Any(a => a.Id == id)
                 }).ToList());
         }
 
         // GET: Authors/{authorId}/Books
         [HttpPost("[controller]/{id:guid}/Books")]
-        public async Task<IActionResult> Books(Guid id, IEnumerable<SelectedBook> selectedBooks)
+        public async Task<IActionResult> Books(Guid id, IList<SelectedBook> selectedBooks)
         {
             var author = await _context.Author.Include(a => a.Books)
                                               .FirstOrDefaultAsync(a => a.Id == id);
@@ -175,9 +177,17 @@ namespace mvc.Controllers
                 return NotFound();
 
             author.Books.Clear();
-            var selectedList = selectedBooks.Where(b => b.IsSelected).Select(b => b.Book);
+            var selectedList = selectedBooks.Where(b => b.IsSelected)
+                                            .Select(b =>
+                                            {
+                                                b.Book.Codes = JsonSerializer.Deserialize<string[]>(b.BookCodes, null);
+                                                return b.Book;
+                                            });
+
             foreach (var book in selectedList)
-                author.Books.Add(await _context.Books.FirstOrDefaultAsync(b => b.Id == book.Id));
+                author.Books.Add(book);
+            
+                
 
             await _context.SaveChangesAsync();
 

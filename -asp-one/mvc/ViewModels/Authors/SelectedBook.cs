@@ -9,6 +9,7 @@ namespace mvc.ViewModels.Authors
     public class SelectedBook
     {
         public Book Book { get; set; }
+        public string BookCodes { get; set; }
         public bool IsSelected { get; set; }
     }
 }
