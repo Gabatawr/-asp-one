@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using mvc.Data;
 using mvc.ViewModels.Authors;
@@ -15,41 +12,25 @@ namespace mvc.Controllers
     public class AuthorsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public AuthorsController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        public AuthorsController(ApplicationDbContext context) => _context = context;
 
         // GET: Authors
-        public IActionResult Index()
-        {
-            return View(_context.Author.AsAsyncEnumerable());
-        }
+        public IActionResult Index() => View(_context.Author.AsAsyncEnumerable());
 
         // GET: Authors/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var author = await _context.Author
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (author == null)
-            {
-                return NotFound();
-            }
+            if (author == null) return NotFound();
 
             return View(author);
         }
 
         // GET: Authors/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        public IActionResult Create() => View();
 
         // POST: Authors/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -71,16 +52,11 @@ namespace mvc.Controllers
         // GET: Authors/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var author = await _context.Author.FindAsync(id);
-            if (author == null)
-            {
-                return NotFound();
-            }
+            if (author == null) return NotFound();
+            
             return View(author);
         }
 
@@ -91,10 +67,7 @@ namespace mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,FirstName,LastName,Birthday")] Author author)
         {
-            if (id != author.Id)
-            {
-                return NotFound();
-            }
+            if (id != author.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -105,14 +78,8 @@ namespace mvc.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AuthorExists(author.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (_context.Author.Any(e => e.Id == id) is false) return NotFound();
+                    else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -122,17 +89,12 @@ namespace mvc.Controllers
         // GET: Authors/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var author = await _context.Author
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (author == null)
-            {
-                return NotFound();
-            }
+
+            if (author == null) return NotFound();
 
             return View(author);
         }
@@ -145,12 +107,8 @@ namespace mvc.Controllers
             var author = await _context.Author.FindAsync(id);
             _context.Author.Remove(author);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool AuthorExists(Guid id)
-        {
-            return _context.Author.Any(e => e.Id == id);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Authors/{authorId}/Books
@@ -162,7 +120,6 @@ namespace mvc.Controllers
                 new SelectedBook
                 {
                     Book = b,
-                    BookCodes = JsonSerializer.Serialize(b.Codes, null),
                     IsSelected = b.Authors.Any(a => a.Id == id)
                 }).ToList());
         }
@@ -173,24 +130,16 @@ namespace mvc.Controllers
         {
             var author = await _context.Author.Include(a => a.Books)
                                               .FirstOrDefaultAsync(a => a.Id == id);
-            if (author == null)
-                return NotFound();
+
+            if (author == null) return NotFound();
 
             author.Books.Clear();
             var selectedList = selectedBooks.Where(b => b.IsSelected)
-                                            .Select(b =>
-                                            {
-                                                b.Book.Codes = JsonSerializer.Deserialize<string[]>(b.BookCodes, null);
-                                                return b.Book;
-                                            });
-
+                                            .Select(b => b.Book);
             foreach (var book in selectedList)
-                author.Books.Add(book);
-            
+                author.Books.Add(await _context.Books.FirstAsync(b => b.Id == book.Id));
                 
-
             await _context.SaveChangesAsync();
-
             return RedirectToAction(nameof(Details), new { id = id });
         }
     }

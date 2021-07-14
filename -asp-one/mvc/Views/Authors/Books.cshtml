@@ -42,19 +42,15 @@
                     @Html.EditorFor(modelItem => Model[i].IsSelected)
                 </td>
                 <td>
-                    @Html.HiddenFor(modelItem => Model[i].Book.Title)
                     @Html.DisplayFor(modelItem => Model[i].Book.Title)
                 </td>
                 <td>
-                    @Html.HiddenFor(modelItem => Model[i].Book.Decription)
                     @Html.DisplayFor(modelItem => Model[i].Book.Decription)
                 </td>
                 <td>
-                    @Html.HiddenFor(modelItem => Model[i].Book.Pages)
                     @Html.DisplayFor(modelItem => Model[i].Book.Pages)
                 </td>
                 <td>
-                    @Html.HiddenFor(modelItem => Model[i].BookCodes)
                     @Html.Raw(string.Join("<br/>", Model[i].Book.Codes.Select(Html.Encode)))
                 </td>
                 @*<td>

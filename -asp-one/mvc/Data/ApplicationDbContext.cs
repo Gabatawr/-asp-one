@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 
 namespace mvc.Data
@@ -12,9 +8,7 @@ namespace mvc.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
-        {
-
-        }
+        {}
 
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Author { get; set; }
