@@ -15,7 +15,7 @@ namespace mvc.Data
         public Uri CoverImageUri { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [MaxLength(100/*, ErrorMessageResourceType = typeof(Resource.Error), ErrorMessageResourceName = "Title"*/)]
         [Display(Name = "Book title", ShortName = "Title", Order = 0)]
         public String Title { get; set; }
 
@@ -23,7 +23,7 @@ namespace mvc.Data
         public String Decription { get; set; }
 
         public int Pages { get; set; }
-        public String[] Codes { get; set; }
+        public HashSet<string> Codes { get; set; }
         public HashSet<Author> Authors { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:Y}")]

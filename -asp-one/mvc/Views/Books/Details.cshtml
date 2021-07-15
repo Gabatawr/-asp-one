@@ -32,7 +32,7 @@
             @Html.DisplayNameFor(model => model.Codes)
         </dt>
         <dd class="col-sm-10">
-            @Html.Raw(string.Join("<br/>", Model.Codes.Select(Html.Encode)))
+            @Html.Raw(string.Join("<br/>", Model.Codes?.Select(Html.Encode)));
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Published)

@@ -1,0 +1,62 @@
+﻿@using mvc.Data
+
+@inject NavigationManager navger
+@inject ApplicationDbContext context
+
+<h3>Codes</h3>
+
+@code
+{
+    private Book book;
+
+    private static Guid GetIdFromUrl(string url)
+    {
+        var uri = new Uri(url);
+        var path = uri.LocalPath;
+        var slashIndex = path.LastIndexOf('/');
+        var id = path.Substring(slashIndex + 1);
+        return Guid.Parse(id);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var bookId = GetIdFromUrl(navger.Uri);
+        book = await context.Books.FindAsync(bookId);
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task RemoveCode(string code)
+    {
+        book.Codes.Remove(code);
+
+        context.Entry(book).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+        await context.SaveChangesAsync();
+    }
+
+    private string newCode = string.Empty;
+    private async Task AddCode(string code)
+    {
+        book.Codes.Add(code);
+        newCode = string.Empty;
+
+        context.Entry(book).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+        await context.SaveChangesAsync();
+    }
+}
+
+@if (book?.Codes != null)
+{
+    <ul>
+        @foreach (var code in book.Codes)
+        {
+            <li>
+                <div>@(code)</div>
+                <button type="button" class="btn badge-danger" @onclick="@(async () => await RemoveCode(code))">Remove</button>
+            </li>
+        }
+    </ul>
+}
+
+<input type="text" placeholder="new code" @bind="@newCode" />
+<button type="button" class="btn badge-primary" @onclick="@(async () => await AddCode(newCode))">Add</button>

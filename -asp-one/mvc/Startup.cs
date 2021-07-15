@@ -28,6 +28,8 @@ namespace mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddLocalization(options => options.ResourcesPath = "Resources");
+            
             services.Configure<EmailOptions>(Configuration.GetSection("Email"));
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -38,6 +40,8 @@ namespace mvc
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+
+            services.AddServerSideBlazor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +68,8 @@ namespace mvc
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapBlazorHub();
+
                 endpoints.MapControllerRoute(
                     name: "privacyInt",
                     pattern: "{controller=Home}/Privacy/{id:int}",

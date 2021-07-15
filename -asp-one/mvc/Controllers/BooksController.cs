@@ -68,16 +68,11 @@ namespace mvc.Controllers
         // GET: Books/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var book = await _context.Books.FindAsync(id);
-            if (book == null)
-            {
-                return NotFound();
-            }
+            if (book == null) return NotFound();
+            
             return View(book);
         }
 
@@ -86,50 +81,41 @@ namespace mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title,Decription,Pages,Codes,Published")] Book book)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Title,Decription,Pages")] Book book) /*Published*/
         {
-            if (id != book.Id)
-            {
-                return NotFound();
-            }
+            if (id != book.Id) return NotFound();
+            var bookBase = await _context.Books.FindAsync(id);
 
             if (ModelState.IsValid)
             {
+                bookBase.Title = book.Title;
+                bookBase.Decription = book.Decription;
+                bookBase.Pages = book.Pages;
+                //bookBase.Published = book.Published;
+
                 try
                 {
-                    _context.Update(book);
+                    _context.Update(bookBase);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookExists(book.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (_context.Books.Any(e => e.Id == book.Id) is false) return NotFound();
+                    else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(book);
+            return View(bookBase);
         }
 
         // GET: Books/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();    
 
             var book = await _context.Books
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (book == null)
-            {
-                return NotFound();
-            }
+            if (book == null) return NotFound();
 
             return View(book);
         }
@@ -143,11 +129,6 @@ namespace mvc.Controllers
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool BookExists(Guid id)
-        {
-            return _context.Books.Any(e => e.Id == id);
         }
     }
 }

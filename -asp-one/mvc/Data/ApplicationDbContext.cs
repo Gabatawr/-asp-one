@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Text.Json;
 
 namespace mvc.Data
@@ -22,8 +23,12 @@ namespace mvc.Data
             builder.Entity<Book>(b =>
             {
                 b.Property(e => e.Codes).HasConversion(
-                    array => JsonSerializer.Serialize(array, null),
-                    str => JsonSerializer.Deserialize<string[]>(str, null)
+                    set => set.Count < 1
+                        ? string.Empty
+                        : JsonSerializer.Serialize(set, null),
+                    str => string.IsNullOrEmpty(str)
+                        ? new HashSet<string>()
+                        : JsonSerializer.Deserialize<HashSet<string>>(str, null)
                 );
             });
         }
