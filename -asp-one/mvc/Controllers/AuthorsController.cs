@@ -37,7 +37,7 @@ namespace mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Birthday")] Author author)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,Birthday")] Author author)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace mvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,FirstName,LastName,Birthday")] Author author)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,FirstName,LastName,Email,Birthday")] Author author)
         {
             if (id != author.Id) return NotFound();
 

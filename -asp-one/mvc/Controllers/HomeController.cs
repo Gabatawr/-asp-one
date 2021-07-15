@@ -16,7 +16,7 @@ namespace mvc.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly EmailOptions _emailOptions;
 
-        public HomeController(ILogger<HomeController> logger, IOptions<EmailOptions> emailOptions)
+        public HomeController(ILogger<HomeController> logger, IOptionsSnapshot<EmailOptions> emailOptions)
         {
             _logger = logger;
             _emailOptions = emailOptions.Value;
