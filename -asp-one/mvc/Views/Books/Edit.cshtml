@@ -1,4 +1,7 @@
-﻿@model mvc.Data.Book
+﻿@using mvc.Data
+@using Microsoft.AspNetCore.Components
+
+@model Book
 
 @{
     ViewData["Title"] = "Edit";
@@ -32,12 +35,12 @@
                 <input asp-for="Pages" class="form-control" />
                 <span asp-validation-for="Pages" class="text-danger"></span>
             </div>
-            @*<div class="form-group">
+            <div class="form-group">
                 <label asp-for="Published" class="control-label"></label>
                 <input asp-for="Published" class="form-control"/>
                 <span asp-validation-for="Published" class="text-danger"></span>
-            </div>*@
-            <component type="typeof(mvc.Views.Books.Codes)" render-mode="ServerPrerendered" />
+            </div>
+            @(await Html.RenderComponentAsync<mvc.Views.Books.Codes>(RenderMode.ServerPrerendered, new { book = Model }))
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

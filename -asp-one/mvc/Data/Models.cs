@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace mvc.Data
 {
@@ -15,7 +13,7 @@ namespace mvc.Data
         public Uri CoverImageUri { get; set; }
 
         [Required]
-        [MaxLength(100/*, ErrorMessageResourceType = typeof(Resource.Error), ErrorMessageResourceName = "Title"*/)]
+        [MaxLength(100)]
         [Display(Name = "Book title", ShortName = "Title", Order = 0)]
         public String Title { get; set; }
 
@@ -30,7 +28,6 @@ namespace mvc.Data
         public DateTime Published { get; set; }
 
         public Publisher Publisher { get; set; }
-        
     }
 
     public class Author

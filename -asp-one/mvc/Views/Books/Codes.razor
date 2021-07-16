@@ -7,41 +7,22 @@
 
 @code
 {
-    private Book book;
+    [Parameter]
+    public Book book { get; set; }
 
-    private static Guid GetIdFromUrl(string url)
-    {
-        var uri = new Uri(url);
-        var path = uri.LocalPath;
-        var slashIndex = path.LastIndexOf('/');
-        var id = path.Substring(slashIndex + 1);
-        return Guid.Parse(id);
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        var bookId = GetIdFromUrl(navger.Uri);
-        book = await context.Books.FindAsync(bookId);
-
-        await base.OnInitializedAsync();
-    }
-
-    private async Task RemoveCode(string code)
+    private void RemoveCode(string code)
     {
         book.Codes.Remove(code);
-
-        context.Entry(book).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-        await context.SaveChangesAsync();
+        context.Entry(book.Codes).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
     }
 
     private string newCode = string.Empty;
-    private async Task AddCode(string code)
+    private void AddCode(string code)
     {
         book.Codes.Add(code);
-        newCode = string.Empty;
+        context.Entry(book.Codes).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 
-        context.Entry(book).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-        await context.SaveChangesAsync();
+        newCode = string.Empty;
     }
 }
 
@@ -52,11 +33,12 @@
         {
             <li>
                 <div>@(code)</div>
-                <button type="button" class="btn badge-danger" @onclick="@(async () => await RemoveCode(code))">Remove</button>
+                <button type="button" class="btn badge-danger" @onclick="@(() => RemoveCode(code))">Remove</button>
             </li>
         }
     </ul>
+    <input type="hidden" id="Codes" name="Codes" value="@System.Text.Json.JsonSerializer.Serialize(book.Codes, null)" />
 }
 
 <input type="text" placeholder="new code" @bind="@newCode" />
-<button type="button" class="btn badge-primary" @onclick="@(async () => await AddCode(newCode))">Add</button>
+<button type="button" class="btn badge-primary" @onclick="@(() => AddCode(newCode))">Add</button>
