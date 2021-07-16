@@ -24,7 +24,7 @@ namespace mvc.Data
         public HashSet<string> Codes { get; set; }
         public HashSet<Author> Authors { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:Y}")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Published { get; set; }
 
         public Publisher Publisher { get; set; }
@@ -46,7 +46,7 @@ namespace mvc.Data
         [EmailAddress]
         public String Email { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:Y}")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Birthday { get; set; }
 
         public HashSet<Book> Books { get; set; }

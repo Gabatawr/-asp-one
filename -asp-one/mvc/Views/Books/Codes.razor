@@ -10,18 +10,12 @@
     [Parameter]
     public Book book { get; set; }
 
-    private void RemoveCode(string code)
-    {
-        book.Codes.Remove(code);
-        context.Entry(book.Codes).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-    }
+    private void RemoveCode(string code) => book.Codes.Remove(code);
 
     private string newCode = string.Empty;
     private void AddCode(string code)
     {
         book.Codes.Add(code);
-        context.Entry(book.Codes).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-
         newCode = string.Empty;
     }
 }
