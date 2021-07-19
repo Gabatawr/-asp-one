@@ -4,40 +4,48 @@
     ViewData["Title"] = "Details";
 }
 
+@section MetaTags
+{
+    @*<open-graph-website title="@Model.Title" main-image="@new OpenGraphImage(Model.CoverImageUri)" />*@
+    <open-graph-books-book title="@Model.Title" 
+                           isbn="9780735619579" 
+                           main-image="@new OpenGraphImage(Model.CoverImageUri)"/>
+}
+
 <h1>Details</h1>
 
 <div>
     <h4>Book</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Decription)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Decription)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Pages)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Pages)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Codes)
         </dt>
         <dd class="col-sm-10">
             @Html.Raw(string.Join("<br/>", Model.Codes?.Select(Html.Encode)))
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Published)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Published)
         </dd>
     </dl>
