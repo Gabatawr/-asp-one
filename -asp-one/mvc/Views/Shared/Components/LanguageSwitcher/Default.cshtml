@@ -1,0 +1,17 @@
+﻿@model LanguageSwitcherModel
+
+<ul id="language-switcher">
+    @foreach (var culture in Model.SupportedCultures)
+    {
+        <li>
+            @if (Model.CurrentUICulture.Name == culture.Name)
+            {
+                <strong>@culture.Name</strong>
+            }
+            else
+            {
+                <a asp-route-culture="@culture.Name" asp-route-sitecoreRoute="@Model.CurrentSitecoreRoute">@culture.Name</a>
+            }
+        </li>
+    }
+</ul>
