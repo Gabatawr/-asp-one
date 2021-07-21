@@ -19,7 +19,6 @@ namespace mvc
     public class Startup
     {
         public Startup(IConfiguration configuration) => Configuration = configuration;
-        
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
@@ -29,7 +28,7 @@ namespace mvc
             {
                 var _defaultLanguage = "en-US";
                 var supportedCultures = new List<CultureInfo>
-                { 
+                {
                     new CultureInfo(_defaultLanguage),
                     new CultureInfo("ru-RU"),
                     new CultureInfo("uk-UA")
@@ -37,8 +36,6 @@ namespace mvc
                 options.DefaultRequestCulture = new RequestCulture(_defaultLanguage, _defaultLanguage);
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
-
-                //options.FallBackToParentUICultures = true;
 
                 options.RequestCultureProviders
                        .Remove(typeof(AcceptLanguageHeaderRequestCultureProvider));
@@ -92,8 +89,21 @@ namespace mvc
 
             app.UseEndpoints(endpoints =>
             {
+                // Blazor
                 endpoints.MapBlazorHub();
 
+                // Areas
+                endpoints.MapAreaControllerRoute(
+                    name: "Checkout",
+                    areaName: "ShoppingCart",
+                    pattern: "Checkout",
+                    defaults: new { controller = "Checkout", action = "Index" });
+
+                endpoints.MapControllerRoute(
+                    name: "Areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+                // Privacy
                 endpoints.MapControllerRoute(
                     name: "privacyInt",
                     pattern: "{controller=Home}/Privacy/{id:int}",
@@ -103,9 +113,12 @@ namespace mvc
                     name: "privacyString",
                     pattern: "{controller=Home}/{action=Privacy}/{id:guid?}");
 
+                // Default
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}");
+
+                // Razor
                 endpoints.MapRazorPages();
             });
         }
