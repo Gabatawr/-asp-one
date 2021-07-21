@@ -55,6 +55,8 @@ namespace mvc.Data
     public class Publisher
     {
         public Guid Id { get; set; }
+
+        [MinLength(2)]
         public String Name { get; set; }
         public Country Country { get; set; }
         public HashSet<Book> Books { get; set; }
@@ -63,6 +65,9 @@ namespace mvc.Data
     public class Country
     {
         public Guid Id { get; set; }
+
+        [MinLength(3)]
+        [MaxLength(64)]
         public String Name { get; set; }
     }
 }

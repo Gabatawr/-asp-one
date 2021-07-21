@@ -1,53 +1,71 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using mvc.Data;
+using mvc.Extensions;
+using mvc.Middlewares;
 using mvc.Options;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace mvc
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
+        public Startup(IConfiguration configuration) => Configuration = configuration;
+        
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddLocalization(options => options.ResourcesPath = "Resources");
-            
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var _defaultLanguage = "en-US";
+                var supportedCultures = new List<CultureInfo>
+                { 
+                    new CultureInfo(_defaultLanguage),
+                    new CultureInfo("ru-RU"),
+                    new CultureInfo("uk-UA")
+                };
+                options.DefaultRequestCulture = new RequestCulture(_defaultLanguage, _defaultLanguage);
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+
+                //options.FallBackToParentUICultures = true;
+
+                options.RequestCultureProviders
+                       .Remove(typeof(AcceptLanguageHeaderRequestCultureProvider));
+            });
+
             services.Configure<EmailOptions>(Configuration.GetSection("Email"));
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddControllersWithViews();
 
             services.AddServerSideBlazor();
 
+            services.AddRazorPages()
+                    .AddViewLocalization();
+
+            services.AddScoped<RequestLocalizationCookiesMiddleware>();
+
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -58,11 +76,14 @@ namespace mvc
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            //app.UseHttpsRedirection();
+
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseRequestLocalization();
+            app.UseRequestLocalizationCookies();
 
             app.UseRouting();
 
