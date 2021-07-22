@@ -27,15 +27,19 @@ namespace mvc.Controllers
             ViewBag.EmailOptions = _emailOptions;
             return View();
         }
+
         public IActionResult Privacy(Guid? id)
         {
             return View(id);
         }
+
         [ActionName("PrivacyByInt")]
         public IActionResult Privacy(int id)
         {
             return View("Privacy", id);
         }
+
+        [Route("~/[action]", Name = "Error"), HttpGet, HttpPost]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
